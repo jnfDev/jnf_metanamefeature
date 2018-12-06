@@ -238,10 +238,11 @@ class Jn_metanameattr extends Module
     public function hookActionFeatureSave($params)
     {
         $id_feature = (int) $params['id_feature'];
-
         $form_value = Tools::getValue('meta-name');
 
-        $this->setFeatureMetaName($form_value, $id_feature);
+        if (!$this->setFeatureMetaName($form_value, $id_feature)) {
+            $this->context->controller->errors[] = $this->l('Error trying to saving Meta-Name');
+        }
     }
 
     public function hookDisplayProductExtraContent($params)
@@ -255,12 +256,13 @@ class Jn_metanameattr extends Module
 
     public function setFeatureMetaName($meta_name, $id_feature)
     {
+        // Meta name already exist?
         $exist = $this->getFeatureMetaName($id_feature);
 
         if ($exist) {
-            $sql = 'UPDATE INTO `'._DB_PREFIX_.'jn_metanameattr`
+            $sql = 'UPDATE `'._DB_PREFIX_.'jn_metanameattr`
                     SET `value` = "'.pSQL($meta_name).'"
-                    WHERE ';  // Terminar              
+                    WHERE `id_feature` = ' . (int) $id_feature;              
 
         } else {
             $sql = 'INSERT INTO `'._DB_PREFIX_.'jn_metanameattr` (`id_feature`, `value`)
