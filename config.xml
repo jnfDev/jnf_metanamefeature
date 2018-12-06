@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+	<name>jn_metanameattr</name>
+	<displayName><![CDATA[Meta-Name Attribute]]></displayName>
+	<version><![CDATA[1.0.0]]></version>
+	<description><![CDATA[This module add a extra field to feature and attributes in the BackOffice]]></description>
+	<author><![CDATA[Jairo J. Niño]]></author>
+	<tab><![CDATA[others]]></tab>
+	<is_configurable>1</is_configurable>
+	<need_instance>1</need_instance>
+</module>
