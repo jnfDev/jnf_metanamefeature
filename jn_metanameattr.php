@@ -223,37 +223,6 @@ class Jn_metanameattr extends Module
         $this->context->controller->addCSS($this->_path.'/views/css/front.css');
     }
 
-    public function hookDisplayFeatureForm($params)
-    {
-        $id_feature = $params['id_feature'];
-        
-        $this->context->smarty->assign(array(
-            'id_feature' => $id_feature,
-            'meta_name' => $this->getFeatureMetaName($id_feature)
-        ));
-
-        return $this->context->smarty->fetch($this->local_path.'views/templates/admin/attr_form.tpl');
-    }
-
-    public function hookActionFeatureSave($params)
-    {
-        $id_feature = (int) $params['id_feature'];
-        $form_value = Tools::getValue('meta-name');
-
-        if (!$this->setFeatureMetaName($form_value, $id_feature)) {
-            $this->context->controller->errors[] = $this->l('Error trying to saving Meta-Name');
-        }
-    }
-
-    public function hookDisplayProductExtraContent($params)
-    {
-        $id_lang =  $this->context->language->id;
-        $id_product = (int) Tools::getValue('id_product');;
-        $feature_by_metaname = $this->getAllFeaturesByMetaName($id_lang, $id_product);
-
-        $this->context->smarty->assign('feature_by_metaname', $feature_by_metaname);
-    }
-
     public function setFeatureMetaName($meta_name, $id_feature)
     {
         // Meta name already exist?
@@ -262,7 +231,7 @@ class Jn_metanameattr extends Module
         if ($exist) {
             $sql = 'UPDATE `'._DB_PREFIX_.'jn_metanameattr`
                     SET `value` = "'.pSQL($meta_name).'"
-                    WHERE `id_feature` = ' . (int) $id_feature;              
+                    WHERE `id_feature` = ' . (int) $id_feature;
 
         } else {
             $sql = 'INSERT INTO `'._DB_PREFIX_.'jn_metanameattr` (`id_feature`, `value`)
@@ -305,5 +274,38 @@ class Jn_metanameattr extends Module
         }
 
         return $feature_by_metaname;
+    }
+
+    /* Hooks functions */
+
+    public function hookDisplayFeatureForm($params)
+    {
+        $id_feature = $params['id_feature'];
+        
+        $this->context->smarty->assign(array(
+            'id_feature' => $id_feature,
+            'meta_name' => $this->getFeatureMetaName($id_feature)
+        ));
+
+        return $this->context->smarty->fetch($this->local_path.'views/templates/admin/attr_form.tpl');
+    }
+
+    public function hookActionFeatureSave($params)
+    {
+        $id_feature = (int) $params['id_feature'];
+        $form_value = Tools::getValue('meta-name');
+
+        if (!$this->setFeatureMetaName($form_value, $id_feature)) {
+            $this->context->controller->errors[] = $this->l('Error trying to saving Meta-Name');
+        }
+    }
+
+    public function hookDisplayProductExtraContent($params)
+    {
+        $id_lang =  $this->context->language->id;
+        $id_product = (int) Tools::getValue('id_product');;
+        $feature_by_metaname = $this->getAllFeaturesByMetaName($id_lang, $id_product);
+
+        $this->context->smarty->assign('feature_by_metaname', $feature_by_metaname);
     }
 }
