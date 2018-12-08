@@ -64,11 +64,8 @@ class Jnf_Metanamefeature extends Module
     {
         Configuration::updateValue('jnf_metanamefeature_LIVE_MODE', false);
 
-        //Install SQL file
-        $sql_file = dirname(__FILE__). '/sql/install.php';
-        require($sql_file);
-
         return parent::install() &&
+            $this->installDb() &&
             $this->registerHook('displayFeatureForm') &&
             $this->registerHook('actionFeatureSave') &&
             $this->registerHook('displayProductExtraContent');
@@ -77,6 +74,17 @@ class Jnf_Metanamefeature extends Module
     public function uninstall()
     {
         return parent::uninstall();
+    }
+
+    public function installDb()
+    {
+        require(dirname(__FILE__). '/sql/install.php');
+        foreach ($sql as $s) {
+            if (!Db::getInstance()->execute($s))
+                return false;
+        }
+        return true;
+
     }
 
     public function setFeatureMetaName($meta_name, $id_feature)

@@ -30,4 +30,3 @@ $sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'jnf_metanamefeature` (
     `value` varchar(255) NOT NULL,
     PRIMARY KEY  (`id_metanameattr`)
 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
-
