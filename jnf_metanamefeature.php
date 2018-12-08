@@ -28,16 +28,16 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-class Jn_metanameattr extends Module
+class Jnf_Metanamefeature extends Module
 {
     protected $config_form = false;
 
     public function __construct()
     {
-        $this->name = 'jn_metanameattr';
+        $this->name = 'jnf_metanamefeature';
         $this->tab = 'others';
-        $this->version = '1.0.0';
-        $this->author = 'Jairo J. Niño';
+        $this->version = '0.4';
+        $this->author = 'Jairo J. Niño (jnfDev)';
         $this->need_instance = 1;
 
         /**
@@ -47,8 +47,11 @@ class Jn_metanameattr extends Module
 
         parent::__construct();
 
-        $this->displayName = $this->l('Meta-Name Attribute');
-        $this->description = $this->l('This module add a extra field to feature and attributes in the BackOffice');
+        $this->displayName = $this->l('Meta-Name Feature');
+        $this->description = $this->l('
+            This module add a extra field to feature form in 
+            BackOffice who be able to set a meta-name in all features created.
+        ');
 
         $this->ps_versions_compliancy = array('min' => '1.7', 'max' => _PS_VERSION_);
     }
