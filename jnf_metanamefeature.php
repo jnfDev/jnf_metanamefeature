@@ -62,7 +62,7 @@ class Jnf_Metanamefeature extends Module
      */
     public function install()
     {
-        Configuration::updateValue('JN_METANAMEATTR_LIVE_MODE', false);
+        Configuration::updateValue('jnf_metanamefeature_LIVE_MODE', false);
 
         //Install SQL file
         $sql_file = dirname(__FILE__). '/sql/install.php';
@@ -85,12 +85,12 @@ class Jnf_Metanamefeature extends Module
         $exist = $this->getFeatureMetaName($id_feature);
 
         if ($exist) {
-            $sql = 'UPDATE `'._DB_PREFIX_.'jn_metanameattr`
+            $sql = 'UPDATE `'._DB_PREFIX_.'jnf_metanamefeature`
                     SET `value` = "'.pSQL($meta_name).'"
                     WHERE `id_feature` = ' . (int) $id_feature;
 
         } else {
-            $sql = 'INSERT INTO `'._DB_PREFIX_.'jn_metanameattr` (`id_feature`, `value`)
+            $sql = 'INSERT INTO `'._DB_PREFIX_.'jnf_metanamefeature` (`id_feature`, `value`)
                     VALUES ('. (int) $id_feature.', "'.pSQL($meta_name).'")';
         }
 
@@ -100,7 +100,7 @@ class Jnf_Metanamefeature extends Module
     public function getFeatureMetaName($id_feature, $full = false)
     {
         $sql = 'SELECT `value`
-                FROM `' . _DB_PREFIX_. 'jn_metanameattr`
+                FROM `' . _DB_PREFIX_. 'jnf_metanamefeature`
                 WHERE  `id_feature` = ' . (int) $id_feature; 
 
         return Db::getInstance()->getValue($sql);

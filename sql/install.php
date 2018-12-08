@@ -24,8 +24,8 @@
 *  International Registered Trademark & Property of PrestaShop SA
 */
 
-$sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'jn_metanameattr` (
-    `id_metanameattr` int(11) NOT NULL AUTO_INCREMENT,
+$sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'jnf_metanamefeature` (
+    `id_metaname` int(11) NOT NULL AUTO_INCREMENT,
     `id_feature` int(11) NOT NULL,
     `value` varchar(255) NOT NULL,
     PRIMARY KEY  (`id_metanameattr`)
