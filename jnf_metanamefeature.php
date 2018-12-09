@@ -78,13 +78,14 @@ class Jnf_Metanamefeature extends Module
 
     public function installDb()
     {
-        require(dirname(__FILE__). '/sql/install.php');
-        foreach ($sql as $s) {
-            if (!Db::getInstance()->execute($s))
-                return false;
-        }
-        return true;
+        $sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'jnf_metanamefeature` (
+            `id_metaname` int(11) NOT NULL AUTO_INCREMENT,
+            `id_feature` int(11) NOT NULL,
+            `value` varchar(255) NOT NULL,
+            PRIMARY KEY  (`id_metaname`)
+        ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
 
+        return Db::getInstance()->execute($sql);
     }
 
     public function setFeatureMetaName($meta_name, $id_feature)
