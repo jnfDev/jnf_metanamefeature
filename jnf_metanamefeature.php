@@ -88,6 +88,7 @@ class Jnf_Metanamefeature extends Module
         return Db::getInstance()->execute($sql);
     }
 
+    /* Getter and Setter functions */
     public function setFeatureMetaName($meta_name, $id_feature)
     {
         // Meta name already exist?
