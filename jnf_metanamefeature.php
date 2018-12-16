@@ -68,7 +68,7 @@ class Jnf_Metanamefeature extends Module
             $this->installDb() &&
             $this->registerHook('displayFeatureForm') &&
             $this->registerHook('actionFeatureSave') &&
-            $this->registerHook('displayProductExtraContent');
+            $this->registerHook('filterProductContent');
     }
 
     public function uninstall()
@@ -166,12 +166,14 @@ class Jnf_Metanamefeature extends Module
         }
     }
 
-    public function hookDisplayProductExtraContent($params)
+    public function hookFilterProductContent($params)
     {
         $id_lang =  $this->context->language->id;
         $id_product = (int) Tools::getValue('id_product');;
         $feature_by_metaname = $this->getAllFeaturesByMetaName($id_lang, $id_product);
 
-        $this->context->smarty->assign('feature_by_metaname', $feature_by_metaname);
+        // Add the feature_by_metaname to the current object (all product data). 
+        $params['object']['feature_by_metaname'] = $feature_by_metaname;
+        return $params;
     }
 }
