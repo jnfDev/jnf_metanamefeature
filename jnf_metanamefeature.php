@@ -181,9 +181,16 @@ class Jnf_Metanamefeature extends Module
     public function hookFilterProductSearch($params)
     {
         $id_lang =  $this->context->language->id;
-        $id_product = (int) Tools::getValue('id_product');;
-        $feature_by_metaname = $this->getAllFeaturesByMetaName($id_lang, $id_product);
+        $products = $params['searchVariables']['products'];
+        foreach ($products as &$a_product) {
+            $id_product = (int) $a_product['id_product'];
+            $feature_by_metaname = $this->getAllFeaturesByMetaName($id_lang, $id_product);
+            
+            // Passing by reference the feature_by_metaname 
+            // to all sigle product in the listing (Category page).
+            $a_product['feature_by_metaname'] = $feature_by_metaname; 
+        }
 
-        $params['searchVariables']['feature_by_metaname'] = $feature_by_metaname;
+        return $params;
     }
 }
