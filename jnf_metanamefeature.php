@@ -128,6 +128,9 @@ class Jnf_Metanamefeature extends Module
             
             // Get feature metaname
             $feature_metaname = trim($this->getFeatureMetaName($id_feature));
+            if(!$feature_metaname || $feature_metaname === '') {
+                continue;
+            }
 
             // Get feature name 
             $feature_name = Feature::getFeature($id_lang, $id_feature);
@@ -179,7 +182,7 @@ class Jnf_Metanamefeature extends Module
     }
 
     public function hookFilterProductSearch($params)
-    {
+    {   
         $id_lang =  $this->context->language->id;
         $products = $params['searchVariables']['products'];
         foreach ($products as &$a_product) {
@@ -189,8 +192,6 @@ class Jnf_Metanamefeature extends Module
             // Passing by reference the feature_by_metaname 
             // to all sigle product in the listing (Category page).
             $a_product['feature_by_metaname'] = $feature_by_metaname; 
-        }
-
-        return $params;
+        }        
     }
 }
