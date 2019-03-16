@@ -95,6 +95,10 @@ class Jnf_Metanamefeature extends Module
         // Meta name already exist?
         $exist = $this->getFeatureMetaName($id_feature);
 
+        if(!$meta_name || $meta_name === ''){
+            return true;
+        }
+
         if ($exist) {
             $sql = 'UPDATE `'._DB_PREFIX_.'jnf_metanamefeature`
                     SET `value` = "'.pSQL($meta_name).'"
@@ -117,7 +121,7 @@ class Jnf_Metanamefeature extends Module
         return Db::getInstance()->getValue($sql);
     }
 
-    public function getAllFeaturesByMetaName($id_lang, $id_product)
+    public function getAllFeaturesByMetaName($id_product, $id_lang = null)
     {        
         $feature_by_metaname = [];
         $features = Product::getFeaturesStatic((int)$id_product);
@@ -130,6 +134,10 @@ class Jnf_Metanamefeature extends Module
             $feature_metaname = trim($this->getFeatureMetaName($id_feature));
             if(!$feature_metaname || $feature_metaname === '') {
                 continue;
+            }
+
+            if(!$id_lang) {
+                $id_lang = $this->context->language->id;
             }
 
             // Get feature name 
@@ -174,7 +182,7 @@ class Jnf_Metanamefeature extends Module
     {
         $id_lang =  $this->context->language->id;
         $id_product = (int) Tools::getValue('id_product');;
-        $feature_by_metaname = $this->getAllFeaturesByMetaName($id_lang, $id_product);
+        $feature_by_metaname = $this->getAllFeaturesByMetaName($id_product, $id_lang);
 
         // Add the feature_by_metaname to the current object (all product data). 
         $params['object']['feature_by_metaname'] = $feature_by_metaname;
@@ -187,7 +195,7 @@ class Jnf_Metanamefeature extends Module
         $products = $params['searchVariables']['products'];
         foreach ($products as &$a_product) {
             $id_product = (int) $a_product['id_product'];
-            $feature_by_metaname = $this->getAllFeaturesByMetaName($id_lang, $id_product);
+            $feature_by_metaname = $this->getAllFeaturesByMetaName($id_product, $id_lang);
             
             // Passing by reference the feature_by_metaname 
             // to all sigle product in the listing (Category page).
