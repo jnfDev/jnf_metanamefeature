@@ -2,7 +2,7 @@
 
     <label class="control-label col-lg-3">
         <span class="label-tooltip" data-toggle="tooltip" data-html="true" title="" data-original-title="Caracteres no válidos: <>;=#{}">
-            Meta-Name
+            {l s='Meta-Name' mod='jnf_metanamefeature'}
         </span>
     </label>
 
