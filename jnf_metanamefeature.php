@@ -40,26 +40,20 @@ class Jnf_Metanamefeature extends Module
         $this->author = 'Jairo J. Niño (jnfDev)';
         $this->need_instance = 1;
 
-        /**
-         * Set $this->bootstrap to true if your module is compliant with bootstrap (PrestaShop 1.6)
-         */
         $this->bootstrap = true;
 
         parent::__construct();
 
         $this->displayName = $this->l('Meta-Name Feature');
-        $this->description = $this->l('
-            This module add a extra field to feature form in 
+        $this->description = $this->l('This module add a extra field to feature form in 
             BackOffice who be able to set a meta-name in all features created.
         ');
 
-        $this->ps_versions_compliancy = array('min' => '1.7', 'max' => _PS_VERSION_);
+        $this->ps_versions_compliancy = array('min' => '1.7.1', 'max' => _PS_VERSION_);
     }
 
     public function install()
     {
-        Configuration::updateValue('jnf_metanamefeature_LIVE_MODE', false);
-
         return parent::install() &&
             $this->installDb() &&
             $this->registerHook('displayFeatureForm') &&
