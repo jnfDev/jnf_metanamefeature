@@ -36,7 +36,7 @@ class Jnf_Metanamefeature extends Module
     {
         $this->name = 'jnf_metanamefeature';
         $this->tab = 'others';
-        $this->version = '0.4';
+        $this->version = '0.9';
         $this->author = 'Jairo J. Niño (jnfDev)';
         $this->need_instance = 1;
 
@@ -56,10 +56,6 @@ class Jnf_Metanamefeature extends Module
         $this->ps_versions_compliancy = array('min' => '1.7', 'max' => _PS_VERSION_);
     }
 
-    /**
-     * Don't forget to create update methods if needed:
-     * http://doc.prestashop.com/display/PS16/Enabling+the+Auto-Update
-     */
     public function install()
     {
         Configuration::updateValue('jnf_metanamefeature_LIVE_MODE', false);
@@ -68,8 +64,7 @@ class Jnf_Metanamefeature extends Module
             $this->installDb() &&
             $this->registerHook('displayFeatureForm') &&
             $this->registerHook('actionFeatureSave') &&
-            $this->registerHook('filterProductContent') &&
-            $this->registerHook('filterProductSearch');
+            $this->registerHook('actionGetProductPropertiesAfter');
     }
 
     public function uninstall()
@@ -177,29 +172,13 @@ class Jnf_Metanamefeature extends Module
             $this->context->controller->errors[] = $this->l('Error trying to saving Meta-Name');
         }
     }
-
-    public function hookFilterProductContent($params)
+    
+    public function hookActionGetProductPropertiesAfter($params)
     {
         $id_lang =  $this->context->language->id;
-        $id_product = (int) Tools::getValue('id_product');;
-        $feature_by_metaname = $this->getAllFeaturesByMetaName($id_product, $id_lang);
+        $id_product = $params['product']['id_product'];
 
-        // Add the feature_by_metaname to the current object (all product data). 
-        $params['object']['feature_by_metaname'] = $feature_by_metaname;
-        return $params;
-    }
-
-    public function hookFilterProductSearch($params)
-    {   
-        $id_lang =  $this->context->language->id;
-        $products = $params['searchVariables']['products'];
-        foreach ($products as &$a_product) {
-            $id_product = (int) $a_product['id_product'];
-            $feature_by_metaname = $this->getAllFeaturesByMetaName($id_product, $id_lang);
-            
-            // Passing by reference the feature_by_metaname 
-            // to all sigle product in the listing (Category page).
-            $a_product['feature_by_metaname'] = $feature_by_metaname; 
-        }        
+        // Passing by reference the feature_by_metaname 
+        $params['product']['feature_by_metaname'] = $this->getAllFeaturesByMetaName($id_product, $id_lang);
     }
 }
