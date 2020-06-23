@@ -128,15 +128,17 @@ class Jnf_Metanamefeature extends Module
             if(!$id_lang) {
                 $id_lang = $this->context->language->id;
             }
+            
+            $feature = new Feature($id_feature, $id_lang);
+            $featureValue = new FeatureValue($id_feature_value, $id_lang);
 
-            // Get feature name 
-            $feature_name = Feature::getFeature($id_lang, $id_feature);
-            $feature_name = $feature_name['name'];
-            $feature_by_metaname[$feature_metaname]['name'] = $feature_name;
+            if (!Validate::isLoadedObject($feature) || !Validate::isLoadedObject($featureValue)) {
+                continue;
+            }
 
-            // Get Feature value 
-            $feature_value = FeatureValue::getFeatureValue($id_lang, $id_feature_value);
-            $feature_by_metaname[$feature_metaname]['value'] = $feature_value;
+            // Get feature name and value
+            $feature_by_metaname[$feature_metaname]['name'] = $feature->name;
+            $feature_by_metaname[$feature_metaname]['value'] = $featureValue->value;
 
         }
 
